@@ -19,7 +19,8 @@ const consultarHorariosPorMedico = async (req, res) => {
         const connection = await getConnection();
         
         const { id } = req.params;
-        const sql = "SELECT * FROM medicos_has_horarios WHERE medicos_medico_id=? AND disponibilidad=1";
+
+        const sql = "SELECT * FROM medicos_has_horarios MH, horarios H	WHERE MH.horarios_horario_id=H.horario_id AND MH.disponibilidad=1 AND H.disponibilidad=1 AND MH.medicos_medico_id=?"
 
         const result = await connection.query(sql, [id]);
         res.send(result);
@@ -34,10 +35,10 @@ const actualizarHorarios = async (req, res) => {
         const connection = await getConnection();
         
         const { id } = req.params;
-        const { hora_inicio, hora_fin } = req.body;
-        const sql = "UPDATE horarios SET hora_inicio=?, hora_fin=? WHERE horario_id=?";
+        const { hora_inicio, hora_fin, disponibilidad } = req.body;
+        const sql = "UPDATE horarios SET hora_inicio=?, hora_fin=?, disponibilidad=? WHERE horario_id=?";
 
-        const result = await connection.query(sql, [hora_inicio, hora_fin, id]);
+        const result = await connection.query(sql, [hora_inicio, hora_fin, disponibilidad, id]);
         res.send("Horario actualizado");
     }catch(error){
         res.status(500);

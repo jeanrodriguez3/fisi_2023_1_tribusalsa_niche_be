@@ -9,7 +9,7 @@ import horariosRoutes from "./routes/horarios.routes"
 const app = express();
 
 //Configuración
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 25252);
 
 //Middlewares
 app.use(morgan("dev"));

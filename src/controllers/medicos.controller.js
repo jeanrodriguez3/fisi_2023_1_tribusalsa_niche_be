@@ -4,7 +4,7 @@ const consultarMedicos = async (req, res) => {
     try{
         const connection = await getConnection();
 
-        const sql = "SELECT * FROM medicos";
+        const sql = "SELECT M.*, E.nombre FROM medicos M, especialidades E WHERE M.especialidades_especialidad_id=E.especialidad_id ORDER BY M.medico_id ASC";
 
         const result = await connection.query(sql);
         res.json(result);
@@ -19,7 +19,8 @@ const consultarMedicosPorID = async (req, res) => {
         const connection = await getConnection();
 
         const { id } = req.params;
-        const sql = "SELECT * FROM medicos WHERE medico_id=?";
+        const sql = "SELECT M.*, E.nombre FROM medicos M, especialidades E WHERE M.especialidades_especialidad_id=E.especialidad_id AND medico_id=?";
+
 
         const result = await connection.query(sql, [id]);
         res.json(result);
@@ -34,7 +35,7 @@ const consultarMedicosPorEspecialidad = async (req, res) => {
         const connection = await getConnection();
 
         const { id } = req.params;
-        const sql = "SELECT * FROM medicos WHERE especialidades_especialidad_id=?";
+        const sql = "SELECT M.*, E.nombre FROM medicos M, especialidades E WHERE M.especialidades_especialidad_id=E.especialidad_id AND especialidades_especialidad_id=? ORDER BY M.medico_id ASC";
 
         const result = await connection.query(sql, [id]);
         res.json(result);
